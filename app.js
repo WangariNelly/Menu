@@ -73,24 +73,30 @@ const menu = [
   },
 ];
 
-const container = document.querySelector('.section-center'); 
-window.addEventListener("DOMContentLoaded", () => {
-   let showMenu = menuItems.map((menu) => {
 
-const showMenuItems = function displayMenuItems(menuItems){
-  return `<article class="menu-item">
-    <img src=${item.img} class="photo" alt=${item.title} />
-    <div class="item-info">
-      <header>
-        <h4>Buttermilk Pancakes</h4>
-        <h4 class="price">${item.price}</h4>
-      </header>
-      <p class="item-text">${item.desc}</p>
-    </div>
-  </article>`
+const container = document.querySelector('.section-center');
+const buttonContainer = document.querySelector('.btn-container');
+
+window.addEventListener("DOMContentLoaded", () => {
+  showMenuItems(menu); // Assuming 'menu' is an array containing menu items
 });
 
-   showMenu = showMenu.join("");
-   console.log(showMenu);
-   sectionCenter.innerHTML = showMenu;
-  })
+function showMenuItems(menuItems) {
+  const showMenu = menuItems.map((menuItem) => {
+    // Use template literals for cleaner string creation
+    return `
+      <article class="menu-item">
+        <img src="${menuItem.img}" class="photo" alt="${menuItem.title}" />
+        <div class="item-info">
+          <header>
+            <h4>${menuItem.title}</h4>  <h4 class="price">${menuItem.price}</h4>
+          </header>
+          <p class="item-text">${menuItem.desc}</p>
+        </div>
+      </article>
+    `;
+  });
+
+  // Concatenate the menu items directly using join('')
+  container.innerHTML = showMenu.join('');
+}
