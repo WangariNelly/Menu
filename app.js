@@ -78,12 +78,13 @@ const container = document.querySelector('.section-center');
 const buttonContainer = document.querySelector('.btn-container');
 
 window.addEventListener("DOMContentLoaded", () => {
-  showMenuItems(menu); // Assuming 'menu' is an array containing menu items
+  showMenuItems(menu); 
+  showMenuButtons(); 
 });
 
 function showMenuItems(menuItems) {
   const showMenu = menuItems.map((menuItem) => {
-    // Use template literals for cleaner string creation
+
     return `
       <article class="menu-item">
         <img src="${menuItem.img}" class="photo" alt="${menuItem.title}" />
@@ -97,6 +98,47 @@ function showMenuItems(menuItems) {
     `;
   });
 
-  // Concatenate the menu items directly using join('')
   container.innerHTML = showMenu.join('');
+
+}
+
+function showMenuButtons() {
+  const categories = menu.reduce(
+     (values, item)  => {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+  const btns = categories
+    .map( (category) => {
+      return `<button type="button" class="filter-btn" data-id=${category}>
+          ${category}
+        </button>`;
+    })
+    .join("");
+
+  buttonContainer.innerHTML = btns;
+  const filterButtons = buttonContainer.querySelectorAll(".filter-btn");
+  console.log(filterButtons);
+
+  filterButtons.forEach( (btn) => {
+    btn.addEventListener("click", (e) => {
+      console.log(e.currentTarget.dataset);
+      const category = e.currentTarget.dataset.id;
+      const menuCategory = menu.filter(function (menuItem) {
+       
+        if (menuItem.category === category) {
+          return menuItem;
+        }
+      });
+      if (category === "all") {
+        showMenuItems(menu);
+      } else {
+        showMenuItems(menuCategory);
+      }
+    });
+  });
 }
